@@ -48,6 +48,54 @@ public class Pacient {
 		this.sessions = sessions;
 	}
 
+	public String getDependentName() {
+		return dependentName;
+	}
+
+	public void setDependentName(String dependentName) {
+		this.dependentName = dependentName;
+	}
+
+	public String getDependentCpf() {
+		return dependentCpf;
+	}
+
+	public void setDependentCpf(String dependentCpf) {
+		this.dependentCpf = dependentCpf;
+	}
+
+	public String getAdress() {
+		return adress;
+	}
+
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getName() {
 		return name;
 	}
