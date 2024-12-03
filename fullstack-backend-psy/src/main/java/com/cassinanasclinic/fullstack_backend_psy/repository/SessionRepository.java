@@ -10,4 +10,5 @@ public interface SessionRepository extends JpaRepository<Session, Long>{
 	
 	List<Session> findByPacientId(Long pacientId);
 	
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cassinanasclinic.fullstack_backend_psy.exception.PacientNotFoundException;
 import com.cassinanasclinic.fullstack_backend_psy.model.Pacient;
+import com.cassinanasclinic.fullstack_backend_psy.model.Session;
 import com.cassinanasclinic.fullstack_backend_psy.repository.PacientRepository;
 
 @Service
@@ -28,6 +29,16 @@ public class PacientService {
 	
 	public Optional<Pacient> findPacientById (Long id){
 		return pacientRepository.findById(id);
+	}
+	
+	public List<Session> getPacientSessions (Long id){
+		Optional<Pacient> pacient = pacientRepository.findById(id);
+		
+		if(pacient.isPresent()) {
+			return pacient.get().getSessions();
+		}else {
+			throw new PacientNotFoundException(id);
+		}
 	}
 	
 	public Optional<Pacient> findPacientByCpf(String cpf){
