@@ -44,4 +44,8 @@ public class SessionService {
 			return sessionRepository.save(session);
 		}).orElseThrow(() -> new SessionNotFoundException(id));
 	}
+	
+	public List<Session> getSessionsByClientId(Long id) {
+		return sessionRepository.findByPacientId(id);
+	}
 }

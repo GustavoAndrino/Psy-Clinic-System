@@ -2,6 +2,8 @@ package com.cassinanasclinic.fullstack_backend_psy.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,6 +23,7 @@ public class Session {
 	
 	@ManyToOne
 	@JoinColumn(name = "pacient_id")
+	@JsonIgnore
 	private Pacient pacient;
 	
 	public Session() {

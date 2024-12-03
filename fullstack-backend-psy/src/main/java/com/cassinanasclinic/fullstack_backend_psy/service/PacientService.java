@@ -24,7 +24,7 @@ public class PacientService {
 	}
 	
 	public Optional<Pacient> findPacientByName (String string) {
-		return pacientRepository.findByName(string);
+		return pacientRepository.findByNameContaining(string);
 	}
 	
 	public Optional<Pacient> findPacientById (Long id){
