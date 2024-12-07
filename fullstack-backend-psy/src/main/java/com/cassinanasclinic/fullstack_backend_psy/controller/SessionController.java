@@ -1,6 +1,7 @@
 package com.cassinanasclinic.fullstack_backend_psy.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,10 @@ public class SessionController {
 		return ResponseEntity.ok("Session Updated Succesfully");
 	}
 	
-	@PutMapping("/sesssionPaymentStatus/{id}")
-	public ResponseEntity<?> updatePaymentStatus(@RequestBody(required=true) Boolean paid, 
+	@PutMapping("/sessionPaymentStatus/{id}")
+	public ResponseEntity<?> updatePaymentStatus(@RequestBody(required=true) Map<String, Boolean> payload, 
 			@PathVariable Long id){
+		Boolean paid = payload.get("paid");
 		sessionService.updateSessionPaidStatus(id, paid);
 		
 		return ResponseEntity.ok("PaymentStatus updated");

@@ -48,4 +48,5 @@ public class SessionService {
 	public List<Session> getSessionsByClientId(Long id) {
 		return sessionRepository.findByPacientId(id);
 	}
+
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const Navabar = () => {
   return (
@@ -9,6 +10,7 @@ export const Navabar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className='flex-box'>
+          <Link className='btn btn-outline-light' to="/">Home</Link>
           <button className='btn btn-outline-light'>Adicionar Paciente</button>
           <button className='btn btn-outline-light'>Adicionar sessão</button>
           <button className='btn btn-outline-light'>Lista de sessões</button>

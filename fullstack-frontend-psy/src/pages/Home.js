@@ -37,6 +37,7 @@ export default function Home() {
                   <td>{pacient.name}</td>
                   <td>{pacient.dependentName}</td>
                   <td>{pacient.owedValue}</td>
+                  <td><Link className='btn btn-outline-light btn-primary' to={`/viewPacient/${pacient.id}`}>Detalhes</Link></td>
                 </tr>
               ))
             }
