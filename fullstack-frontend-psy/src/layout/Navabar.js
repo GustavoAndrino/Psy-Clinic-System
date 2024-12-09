@@ -13,7 +13,7 @@ export const Navabar = () => {
           <Link className='btn btn-outline-light' to="/">Home</Link>
           <button className='btn btn-outline-light'>Adicionar Paciente</button>
           <button className='btn btn-outline-light'>Adicionar sessão</button>
-          <button className='btn btn-outline-light'>Lista de sessões</button>
+          <Link className='btn btn-outline-light btn-primary' to={"/sessionsList"}>Lista de sessões</Link>
         </div>
         
       </div>

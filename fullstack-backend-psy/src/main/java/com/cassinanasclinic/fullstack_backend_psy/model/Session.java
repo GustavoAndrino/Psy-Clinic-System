@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -76,6 +77,10 @@ public class Session {
 	
 	public Long setId() {
 		return id;
-	}	
+	}
+
+	public Long getThisPacientId() {
+		return pacient.getId();
+	}
 
 }
