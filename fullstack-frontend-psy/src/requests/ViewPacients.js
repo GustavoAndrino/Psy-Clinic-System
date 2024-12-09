@@ -21,7 +21,7 @@ export const ViewPacients = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pacientResponse = await axios.get(`http://localhost:8080/pacient/${id}`);
+        const pacientResponse = await axios.get(`http://localhost:8080/pacientById/${id}`);
         const sessionResponse = await axios.get(`http://localhost:8080/pacientSessionsList/${id}`);
         setPacients(pacientResponse.data);
         setSessions(sessionResponse.data);

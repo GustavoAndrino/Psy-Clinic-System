@@ -1,0 +1,21 @@
+***SEARCH BAR UPDATE EXPLAINED***
+
+As I decided to implement a search bar, the way I first did the backend made it really hard to handle the requests,
+since the backend received an input and returend a Optionl<Pacient> object, which is in essence, a single object, 
+not an array of objects. This method of returning caused react to crash, since it was expecting an array of Pacients.
+
+In order to fix it and make it easier, a new repository query was created, that returned a lsit pacients that had their name
+or their dependent name starting with a string. This is not very efficient, but since a clinic shouldnt have so many 
+clients to the point that this strategy would be prejudicial, then the method should work fine.
+
+Changing the backend caused a problem with forntend requests, that were still trying to use the old /pacient method 
+that returned string based on whatever type of string the user input (cpf, name or id).
+
+In order to fix that, I splitted the previous method into a new /pacient that returns a list of users that contain
+a string (in case there is no string, then it returns all patients) and a new /pacientById method that returns Patients
+based on the id that the front end gives. This allowed us to use a search bar to find patients more easily and allow us
+to click on that user to see more details based on their id.
+
+***TO DO***
+
+Change Pacients for Patients. I kept the idea of patients in portuguese in my head (Pacientes) and mixed both

@@ -31,27 +31,37 @@ public class PacientController {
 	@Autowired
 	PacientService pacientService;
 	
-	@GetMapping("/pacient")
-	public List<Pacient> getAllPacients(){
-		return pacientService.findAllClients();
+	@GetMapping("/pacientName")
+	public ResponseEntity<?> getPacientByName (@RequestParam(required=false) String input){
+		List<Pacient> allPacients;
+		allPacients = pacientService.findPacientByNameContaining(input);
+		return ResponseEntity.ok(allPacients);
 	}
 	
-	@GetMapping("/pacient/{input}")
-	public ResponseEntity<?> getPacientBy (@PathVariable String input){
+	/*@GetMapping("/pacient")
+	public ResponseEntity<?> getPacientBy (@RequestParam(required=false) String input){
 		 Optional<Pacient> pacient;
-
+		 List<Pacient> allPacients;
+		 	if(input.isEmpty()) {
+		 		allPacients = pacientService.findAllClients();
+		 		return ResponseEntity.ok(allPacients);
+		 	}
 	        // Determine input type and call the appropriate service method
 	        if (isNumeric(input)) { // Input is numeric, so it's an ID
 	            pacient = pacientService.findPacientById(Long.parseLong(input));
-	        } else if (isValidCpf(input)) { // Input matches CPF format
+	        } else { // Input matches CPF format
 	            pacient = pacientService.findPacientByCpf(input);
-	        } else { // Otherwise, treat it as a name
-	            pacient = pacientService.findPacientByName(input);
 	        }
 
 	        return pacient.map(ResponseEntity::ok)
 	                  .orElseThrow(() -> new PacientNotFoundException(input));
-	        }
+	        }*/
+	
+	@GetMapping("/pacientById/{id}")
+	public ResponseEntity<?> pacientById(@PathVariable Long id){
+		Optional<Pacient> pacient = pacientService.findPacientById(id);
+		return ResponseEntity.ok(pacient);
+	}
 	
 	@GetMapping("/pacientSessions/{id}")
 	public ResponseEntity<?> getPacientSessions(@PathVariable Long id){

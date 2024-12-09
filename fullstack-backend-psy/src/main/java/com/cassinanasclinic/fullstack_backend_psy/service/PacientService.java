@@ -23,8 +23,9 @@ public class PacientService {
 		return pacientRepository.findAll();
 	}
 	
-	public Optional<Pacient> findPacientByName (String string) {
-		return pacientRepository.findByNameContaining(string);
+	public List<Pacient> findPacientByNameContaining (String string) {
+		System.out.println(string);
+		return pacientRepository.findByNameStartingWithOrDependentNameStartingWith(string);
 	}
 	
 	public Optional<Pacient> findPacientById (Long id){

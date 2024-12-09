@@ -8,10 +8,12 @@ export default function Home() {
   const [pacients, setPacient] = useState([]);
   const [owing, setOwing] = useState(false)
   const [loading, setLoading] = useState(true);
+  const [input, setInput] = useState("")
 
   useEffect(() => {
     loadUsers();
-  }, [])
+    console.log(pacients)
+  }, [input])
 
   const checkOwedValue = (value) => {
     if (value > 0) {
@@ -23,7 +25,7 @@ export default function Home() {
 
   const loadUsers = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/pacient")
+      const result = await axios.get(`http://localhost:8080/pacientName?input=${input}`)
       setPacient(result.data)
     } catch (error) {
       console.log("Error loading pacients" + error)
@@ -32,10 +34,23 @@ export default function Home() {
     }
   }
 
+  const onInputChange = (e) => {
+    setInput(e.target.value)
+  }
+
 
   return (
     <div className='container'>
       <div className='py-4'>
+
+      <input
+        type={"text"}
+        className='search-bar'
+        placeholder='Nome do Paciente'
+        name='input'
+        value={input}
+        onChange={(e) => onInputChange(e)}
+      />
         <table class="table">
           <thead>
             <tr>
