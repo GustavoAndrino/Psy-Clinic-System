@@ -42,11 +42,10 @@ export default function Home() {
   return (
     <div className='container'>
       <div className='py-4'>
-
       <input
         type={"text"}
-        className='search-bar'
-        placeholder='Nome do Paciente'
+        className='textalign: center}'
+        placeholder='Pesquisar nome'
         name='input'
         value={input}
         onChange={(e) => onInputChange(e)}

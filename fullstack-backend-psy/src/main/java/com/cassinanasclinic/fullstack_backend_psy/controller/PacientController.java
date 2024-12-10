@@ -38,6 +38,7 @@ public class PacientController {
 		return ResponseEntity.ok(allPacients);
 	}
 	
+	//TODO see if method below can still be useful for something
 	/*@GetMapping("/pacient")
 	public ResponseEntity<?> getPacientBy (@RequestParam(required=false) String input){
 		 Optional<Pacient> pacient;
@@ -83,7 +84,7 @@ public class PacientController {
 		return ResponseEntity.ok("New Pacient Added Succesfully");
 	}
 	
-	@PutMapping("/edit/pacient/{input}")
+	@PutMapping("/edit/pacient/{id}")
 	public ResponseEntity<?> editPacient(@RequestBody(required=true) Pacient pacient, @PathVariable Long id){
 		pacientService.updatePacientInfo(pacient, id);
 		return ResponseEntity.ok("Pacient Updated Succesfully");

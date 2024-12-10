@@ -11,13 +11,15 @@ export const ViewPacients = () => {
 
   const [sessions, setSessions] = useState([])
   const [pacients, setPacients] = useState(null)
-  const [pacientName, setPacientName] = useState("")
   const [loading, setLoading] = useState(true);
-  const [formattedDate, setFormattedDate] = useState()
   const [owing, setOwing] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState({})
   const [updated, setUpdated] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
+  const [style, setStyle] = useState({})
+  const [disabled, setDisabled] = useState(true)
 
+  //update Pacient and sessons list
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,10 +38,16 @@ export const ViewPacients = () => {
   }, [id, updated]);
 
   useEffect(() => {
+    setStyle({
+      border: readOnly ? '0px solid gray' : '1px solid black',
+      textAlign: 'justify',
+      backgroundColor:'rgb(255, 255, 255)'})
+  }, [readOnly])
+
+  useEffect(() => {
     if (!loading) {
       const hasUnpaidSession = sessions.some(session => !session.paid);
       setOwing(hasUnpaidSession);
-      console.log(owing)
     }
   }, [loading, sessions, updated]);
 
@@ -90,12 +98,30 @@ export const ViewPacients = () => {
         }
       }
       alert('Payment status updated successfully!');
-      setUpdated((prev) => !prev);
     } catch (error) {
       console.error("Error updating payment status:", error);
       alert('Failed to update payment status.');
     }
+
+    try{
+      await axios.put(`http://localhost:8080/edit/pacient/${pacients.id}`, pacients);
+      alert("Patient updated successfully!");
+      setUpdated((prev) => !prev);
+      setReadOnly(true)
+    }catch(error){
+      console.error("Error updating patient:", error);
+      alert('Failed to update patient.');
+    }
   };
+
+  const editInfo = () => {
+    setReadOnly(!readOnly)
+    setDisabled(!disabled)
+  }
+
+  const onInputChange = (e) =>{
+    setPacients({ ...pacients, [e.target.name]: e.target.value });
+  }
 
   return (
     <div className='container'>
@@ -106,31 +132,101 @@ export const ViewPacients = () => {
           <tbody style={{ textAlign: 'left' }}>
             <tr>
               <th>Nome</th>
-              <td>{pacients.name}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='name'
+                value={pacients.name}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr>
               <th>CPF</th>
-              <td>{pacients.cpf}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='cpf'
+                value={pacients.cpf}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr>
               <th>Nome do dependente</th>
-              <td>{pacients.dependentName}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='dependentName'
+                value={pacients.dependentName}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr>
               <th>Cpf do dependente</th>
-              <td>{pacients.dependentCpf}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='dependentCpf'
+                value={pacients.dependentCpf}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr>
               <th>Endereço</th>
-              <td>{pacients.adress}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='adress'
+                value={pacients.adress}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr>
               <th>Celular</th>
-              <td>{pacients.phoneNumber}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='phoneNumber'
+                value={pacients.phoneNumber}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr>
               <th>Email</th>
-              <td>{pacients.email}</td>
+              <td><input
+                type={"text"}
+                className='form-control'
+                placeholder='Nome do Procedimento'
+                name='email'
+                value={pacients.email}
+                readOnly={readOnly}
+                style={style}
+                onChange={(e) => onInputChange(e)}
+                disabled={disabled}
+              /></td>
             </tr>
             <tr className='owedvalue'>
               <th>Valor devido</th>
@@ -196,6 +292,7 @@ export const ViewPacients = () => {
           </tbody>
         </table>
         <button onClick={handleApplyChanges}>Apply</button>
+        <button onClick={editInfo}>Edit</button>
       </div>
     </div>
   )
