@@ -80,8 +80,7 @@ public class PacientController {
 	
 	@PostMapping("/newPacient")
 	public ResponseEntity<?> addNewPacient(@RequestBody(required=true) Pacient pacient){
-		pacientService.addNewPacient(pacient);
-		return ResponseEntity.ok("New Pacient Added Succesfully");
+		return pacientService.addNewPacient(pacient);
 	}
 	
 	@PutMapping("/edit/pacient/{id}")

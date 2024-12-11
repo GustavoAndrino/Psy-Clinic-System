@@ -1,3 +1,7 @@
+
+
+
+***OLD***
 ***SEARCH BAR UPDATE EXPLAINED***
 
 As I decided to implement a search bar, the way I first did the backend made it really hard to handle the requests,
@@ -19,3 +23,4 @@ to click on that user to see more details based on their id.
 ***TO DO***
 
 Change Pacients for Patients. I kept the idea of patients in portuguese in my head (Pacientes) and mixed both
+Alter controller in backend returning a response entity, instead of just returning the service that returns a response entity

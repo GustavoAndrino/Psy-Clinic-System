@@ -91,7 +91,6 @@ export const ViewPacients = () => {
       for (const session of sessions) {
         const updatedStatus = paymentStatus[session.id] === "true";
         if (updatedStatus !== session.paid) {
-          // Send a PUT or PATCH request to update the payment status of the session
           await axios.put(`http://localhost:8080/sessionPaymentStatus/${session.id}`, {
             paid: updatedStatus
           });
@@ -163,7 +162,7 @@ export const ViewPacients = () => {
               <td><input
                 type={"text"}
                 className='form-control'
-                placeholder='Nome do Procedimento'
+                placeholder='Nome do Dependente'
                 name='dependentName'
                 value={pacients.dependentName}
                 readOnly={readOnly}

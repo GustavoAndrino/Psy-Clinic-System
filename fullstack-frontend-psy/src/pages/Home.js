@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { AlertCircleOutline, CheckmarkCircleOutline } from 'react-ionicons';
+import { Button } from 'bootstrap';
 
 export default function Home() {
 
@@ -9,11 +10,12 @@ export default function Home() {
   const [owing, setOwing] = useState(false)
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("")
+  const [update, setUpdated] = useState(false)
 
   useEffect(() => {
     loadUsers();
     console.log(pacients)
-  }, [input])
+  }, [input, update])
 
   const checkOwedValue = (value) => {
     if (value > 0) {
@@ -38,10 +40,26 @@ export default function Home() {
     setInput(e.target.value)
   }
 
+  const deleteButton = (id) => {
+    const confirmDelete = window.confirm("Tem certeza de que quer deletar o paciente ?");
+    try{
+      if(confirmDelete){
+        axios.delete(`http://localhost:8080/pacient/delete/${id}`)
+        alert("Pacient deleted successfully")
+        setUpdated(!update)
+      }
+
+    }catch(error){
+      console.error("Error deleting pacient:", error);
+      alert("Error, pacient wasnt deleted")
+    }
+  }
+
 
   return (
     <div className='container'>
       <div className='py-4'>
+        <h2>Todos Pacientes</h2>
       <input
         type={"text"}
         className='textalign: center}'
@@ -85,7 +103,12 @@ export default function Home() {
                       />
                     )}
                   </td>
-                  <td><Link className='btn btn-outline-light btn-primary' to={`/viewPacient/${pacient.id}`}>Detalhes</Link></td>
+                  <td>
+                    <Link className='btn btn-outline-light btn-primary' to={`/viewPacient/${pacient.id}`}>Detalhes</Link>
+                    <button className='btn btn-outline-light btn-danger' 
+                    onClick={() => deleteButton(pacient.id)}>Deletar
+                    </button>
+                    </td>
                 </tr>
               ))
             }
