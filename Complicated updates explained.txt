@@ -1,4 +1,9 @@
+***Add new Session to patient explained***
 
+Adding a session to a patient resulted in a lot of alterations, due to the fact that de LocalDateTime from the backend no having
+a specified JsonFormat expected before. By adding a expected format (dd/MM/yyyy HH:mm), I had to make some changes to update patient 
+and some alterations to the viewPacient page. Currently, the viewPacient.js looks extermely crowed with a lot of functions. 
+Cleaning it up is a priority for next commit, in which I will separete the components for better readability
 
 
 ***OLD***
@@ -24,3 +29,4 @@ to click on that user to see more details based on their id.
 
 Change Pacients for Patients. I kept the idea of patients in portuguese in my head (Pacientes) and mixed both
 Alter controller in backend returning a response entity, instead of just returning the service that returns a response entity
+Separate components by function in te front end to improve readability for other users

@@ -1,5 +1,7 @@
 package com.cassinanasclinic.fullstack_backend_psy.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,6 +83,14 @@ public class PacientController {
 	@PostMapping("/newPacient")
 	public ResponseEntity<?> addNewPacient(@RequestBody(required=true) Pacient pacient){
 		return pacientService.addNewPacient(pacient);
+	}
+	
+	@PutMapping("/sessionToPacient/{id}")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public ResponseEntity<?> addSessionToPacient(@PathVariable Long id,
+			@RequestBody (required=true)Session session){
+		
+		return pacientService.addNewSessionToPacient(id, session);
 	}
 	
 	@PutMapping("/edit/pacient/{id}")

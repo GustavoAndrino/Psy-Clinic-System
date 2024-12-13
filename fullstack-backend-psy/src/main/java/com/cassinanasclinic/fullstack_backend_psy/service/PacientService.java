@@ -13,6 +13,8 @@ import com.cassinanasclinic.fullstack_backend_psy.model.Pacient;
 import com.cassinanasclinic.fullstack_backend_psy.model.Session;
 import com.cassinanasclinic.fullstack_backend_psy.repository.PacientRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PacientService {
 	
@@ -50,7 +52,7 @@ public class PacientService {
 		Optional<Pacient> pacient = pacientRepository.findByCpf(newPacient.getCpf());
 		
 		if(pacient.isPresent()) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Paciente de cpf já existente");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: este CPF já existe");
 		}
 		
 		newPacient.getSessions().forEach(session -> session.setPacient(newPacient));
@@ -89,6 +91,19 @@ public class PacientService {
 		}
 	}
 	
-	
-	
+	public ResponseEntity<?> addNewSessionToPacient(Long id, Session session){
+		Pacient pacient = pacientRepository.getById(id);
+		
+		session.setPacient(pacient);
+
+	    List<Session> sessions = pacient.getSessions();
+	    sessions.add(session);
+    
+	    pacient.setSessions(sessions); 
+
+	    pacientRepository.save(pacient);
+
+	    return ResponseEntity.ok("Session added successfully!");
+		
+	}
 }

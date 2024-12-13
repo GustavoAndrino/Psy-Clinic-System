@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { format } from 'date-fns'
+import { format, formatISO, parse } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import './ViewPacient.css';
@@ -11,6 +11,7 @@ export const ViewPacients = () => {
 
   const [sessions, setSessions] = useState([])
   const [pacients, setPacients] = useState(null)
+  const [newSession, setNewSession] = useState(null)
   const [loading, setLoading] = useState(true);
   const [owing, setOwing] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState({})
@@ -41,7 +42,8 @@ export const ViewPacients = () => {
     setStyle({
       border: readOnly ? '0px solid gray' : '1px solid black',
       textAlign: 'justify',
-      backgroundColor:'rgb(255, 255, 255)'})
+      backgroundColor: 'rgb(255, 255, 255)'
+    })
   }, [readOnly])
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export const ViewPacients = () => {
     }
   }, [sessions, updated]);
 
-  
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -87,6 +89,26 @@ export const ViewPacients = () => {
 
   const handleApplyChanges = async () => {
     try {
+      if (newSession) {
+        // Validate new session
+        if (!newSession.date || !newSession.value) {
+          alert("Please fill out all fields for the new session.");
+          return;
+        }
+
+        // Save new session to backend
+        await axios.put(`http://localhost:8080/sessionToPacient/${id}`, newSession)
+        // Add new session to sessions list
+        setSessions([...sessions, newSession]);
+        setNewSession(null);
+        alert("New session added successfully!");
+        setNewSession(null)
+      }
+    } catch (error) {
+      console.error("Error creating new session" + error)
+    }
+
+    try {
       // Loop through all sessions and update their payment status
       for (const session of sessions) {
         const updatedStatus = paymentStatus[session.id] === "true";
@@ -102,12 +124,13 @@ export const ViewPacients = () => {
       alert('Failed to update payment status.');
     }
 
-    try{
+    try {
+      console.log(pacients)
       await axios.put(`http://localhost:8080/edit/pacient/${pacients.id}`, pacients);
       alert("Patient updated successfully!");
       setUpdated((prev) => !prev);
       setReadOnly(true)
-    }catch(error){
+    } catch (error) {
       console.error("Error updating patient:", error);
       alert('Failed to update patient.');
     }
@@ -118,9 +141,11 @@ export const ViewPacients = () => {
     setDisabled(!disabled)
   }
 
-  const onInputChange = (e) =>{
+  const onInputChange = (e) => {
     setPacients({ ...pacients, [e.target.name]: e.target.value });
   }
+
+
 
   return (
     <div className='container'>
@@ -246,50 +271,94 @@ export const ViewPacients = () => {
           </tbody>
 
         </table>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">id</th>
-              <th scope="col">Data da sessão</th>
-              <th scope="col">Valor da sessão</th>
-              <th scope="col">Status do pagamento</th>
-              <th scope="col">Pago/Não pago</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              sessions.map((session, index) => (
+        <div className='tableDiv'>
+          <button onClick={() => setNewSession({ date: "", value: "", paid: false })}>
+            Add New Session
+          </button>
+          {newSession && (
+            <button onClick={() => setNewSession(null)}>Cancel</button>
+          )}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">Data da sessão</th>
+                <th scope="col">Valor da sessão</th>
+                <th scope="col">Status do pagamento</th>
+                <th scope="col">Pago/Não pago</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                sessions.map((session, index) => (
+                  <tr>
+                    <th scope="row" Key={index}>{index + 1}</th>
+                    <td>{formatDate(session.date)}</td>
+                    <td>{session.value}</td>
+                    <td>{session.paid ? "Paid" : "Not Paid"}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        name={`payment-${session.id}`}
+                        value="true"
+                        checked={paymentStatus[session.id] === "true"}
+                        onChange={() => handlePaymentChange(session.id, "true")}
+                      />
+                      Paid
+                      <input
+                        type="radio"
+                        name={`payment-${session.id}`}
+                        value="false"
+                        checked={paymentStatus[session.id] === "false"}
+                        onChange={() => handlePaymentChange(session.id, "false")}
+                      />
+                      Not Paid
+
+                    </td>
+                  </tr>
+                ))
+              }
+
+              {newSession && (
                 <tr>
-                  <th scope="row" Key={index}>{index + 1}</th>
-                  <td>{formatDate(session.date)}</td>
-                  <td>{session.value}</td>
-                  <td>{session.paid ? "Paid" : "Not Paid"}</td>
+                  <th scope="row">New</th>
                   <td>
                     <input
-                      type="radio"
-                      name={`payment-${session.id}`}
-                      value="true"
-                      checked={paymentStatus[session.id] === "true"}
-                      onChange={() => handlePaymentChange(session.id, "true")}
+                      type="text"
+                      placeholder="Date (dd/MM/yyyy HH:mm)"
+                      name="date"
+                      value={newSession.date}
+                      onChange={(e) =>
+                        setNewSession({ ...newSession, date: e.target.value })
+                      }
                     />
-                    Paid
+                  </td>
+                  <td>
                     <input
-                      type="radio"
-                      name={`payment-${session.id}`}
-                      value="false"
-                      checked={paymentStatus[session.id] === "false"}
-                      onChange={() => handlePaymentChange(session.id, "false")}
+                      type="number"
+                      placeholder="Value"
+                      value={newSession.value}
+                      onChange={(e) =>
+                        setNewSession({ ...newSession, value: e.target.value })
+                      }
                     />
-                    Not Paid
-
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={newSession.paid}
+                      onChange={(e) =>
+                        setNewSession({ ...newSession, paid: e.target.checked })
+                      }
+                    />
                   </td>
                 </tr>
-              ))
-            }
+              )}
 
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
         <button onClick={handleApplyChanges}>Apply</button>
         <button onClick={editInfo}>Edit</button>
       </div>

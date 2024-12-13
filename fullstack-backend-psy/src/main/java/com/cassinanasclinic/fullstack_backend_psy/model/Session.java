@@ -2,6 +2,7 @@ package com.cassinanasclinic.fullstack_backend_psy.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ public class Session {
 	@GeneratedValue
 	private Long id;
 	
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime date;
 	private double value;
 	private Boolean paid;

@@ -16,7 +16,8 @@ public interface PacientRepository extends JpaRepository<Pacient, Long> {
 	@Query("SELECT p FROM Pacient p WHERE p.name LIKE :searchTerm% OR p.dependentName LIKE :searchTerm%")
 	List<Pacient> findByNameStartingWithOrDependentNameStartingWith(@Param("searchTerm") String searchTerm);
 
-	
 	Optional<Pacient> findByCpf(String cpf);
+	
+	Pacient getById(Long id);
 }
  
