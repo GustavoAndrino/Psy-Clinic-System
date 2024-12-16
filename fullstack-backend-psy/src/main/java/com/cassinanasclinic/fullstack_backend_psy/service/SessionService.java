@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cassinanasclinic.fullstack_backend_psy.exception.PacientNotFoundException;
@@ -48,5 +49,6 @@ public class SessionService {
 	public List<Session> getSessionsByClientId(Long id) {
 		return sessionRepository.findByPacientId(id);
 	}
+	
 
 }
