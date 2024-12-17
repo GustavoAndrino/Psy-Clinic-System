@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
+import InputMask from 'react-input-mask';
 
 export const SessionsTable = ({ sessions, onEdit, onEdit2, updated, paymentStatus }) => {
   const [newSession, setNewSession] = useState(null);
@@ -20,14 +21,6 @@ export const SessionsTable = ({ sessions, onEdit, onEdit2, updated, paymentStatu
       ...prevStatus,
       [sessionId]: value,
     }));
-  };
-
-  const formatDate = (date) => {
-    try {
-      return format(new Date(date), "dd/MM/yyyy HH:mm");
-    } catch {
-      return "Invalid Date";
-    }
   };
 
   const isNewSessionValid = () => {
@@ -66,7 +59,7 @@ export const SessionsTable = ({ sessions, onEdit, onEdit2, updated, paymentStatu
           {sessions.map((session, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{formatDate(session.date)}</td>
+              <td>{session.date}</td>
               <td>{session.value}</td>
               <td>{session.paid ? "Paid" : "Not Paid"}</td>
               <td>
@@ -96,14 +89,17 @@ export const SessionsTable = ({ sessions, onEdit, onEdit2, updated, paymentStatu
             <tr>
               <th scope="row">New</th>
               <td>
-                <input
-                  type="text"
-                  placeholder="Date (dd/MM/yyyy HH:mm)"
+              <InputMask
+                  mask="99/99/9999 99:99"
                   value={newSession.date}
                   onChange={(e) =>
-                    handleNewSessionChange("date", e.target.value)
-                  }
-                />
+                    handleNewSessionChange("date", e.target.value)}
+                  className="form-control"
+                  placeholder="Date (dd/MM/yyyy HH:mm)"
+                  name="date"
+                >
+                  {(inputProps) => <input {...inputProps} />}
+                </InputMask>
               </td>
               <td>
                 <input

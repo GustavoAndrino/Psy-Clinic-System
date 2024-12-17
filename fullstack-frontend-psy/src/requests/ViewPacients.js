@@ -36,17 +36,6 @@ export const ViewPacients = () => {
     fetchData();
   }, [id, updated]);
 
-  useEffect(() => {
-    if (sessions.length > 0) {
-      setPaymentStatus(
-        sessions.reduce((acc, session) => {
-          acc[session.id] = session.paid ? "true" : "false";
-          return acc;
-        }, {})
-      );
-    }
-  }, [sessions, updated]);
-
 
   if (loading) {
     return <div>Loading...</div>;

@@ -19,11 +19,7 @@ export const SessionsList = () => {
             console.log("Failed getting sessions" + sessions)
         }
     }
-
-    const formatDate = (date) => {
-        return format(new Date(date), 'dd/MM/yyyy HH:mm');
-      }
-
+    
   return (
     <div className='container'>
       <div className='py-4'>
@@ -42,7 +38,7 @@ export const SessionsList = () => {
               sessions.map((session, index) => (
                 <tr>
                   <th scope="row" Key={index}>{index + 1}</th>
-                  <td>{formatDate(session.date)}</td>
+                  <td>{session.date}</td>
                   <td>{session.value}</td>
                   <td>{session.paid ? "Paid" : "Not Paid"}&nbsp;&nbsp;&nbsp;{!session.paid ? (
                   <AlertCircleOutline

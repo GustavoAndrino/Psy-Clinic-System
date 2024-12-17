@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';  // Importing axios
+import axios from 'axios'; // Importing axios
+import InputMask from 'react-input-mask'; // Importing InputMask
 
 export const AddNewPacients = () => {
   const [pacient, setPacient] = useState({
@@ -56,21 +57,23 @@ export const AddNewPacients = () => {
                   placeholder="Nome do Paciente"
                   name="name"
                   value={pacient.name}
-                  onChange={(e) => onInputChange(e)}
+                  onChange={onInputChange}
                 />
               </td>
             </tr>
             <tr>
               <th>CPF</th>
               <td>
-                <input
-                  type="text"
+                <InputMask
+                  mask="999.999.999-99"
+                  value={pacient.cpf}
+                  onChange={onInputChange}
                   className="form-control"
                   placeholder="CPF do Paciente"
                   name="cpf"
-                  value={pacient.cpf}
-                  onChange={(e) => onInputChange(e)}
-                />
+                >
+                  {(inputProps) => <input {...inputProps} />}
+                </InputMask>
               </td>
             </tr>
             <tr>
@@ -79,24 +82,26 @@ export const AddNewPacients = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Nome do Dependente"  
+                  placeholder="Nome do Dependente"
                   name="dependenteName"
                   value={pacient.dependenteName}
-                  onChange={(e) => onInputChange(e)}
+                  onChange={onInputChange}
                 />
               </td>
             </tr>
             <tr>
               <th>CPF do dependente</th>
               <td>
-                <input
-                  type="text"
+                <InputMask
+                  mask="999.999.999-99"
+                  value={pacient.dependentCpf}
+                  onChange={onInputChange}
                   className="form-control"
                   placeholder="CPF do Dependente"
                   name="dependentCpf"
-                  value={pacient.dependentCpf}
-                  onChange={(e) => onInputChange(e)}
-                />
+                >
+                  {(inputProps) => <input {...inputProps} />}
+                </InputMask>
               </td>
             </tr>
             <tr>
@@ -108,46 +113,50 @@ export const AddNewPacients = () => {
                   placeholder="Endereço do Paciente"
                   name="adress"
                   value={pacient.adress}
-                  onChange={(e) => onInputChange(e)}
+                  onChange={onInputChange}
                 />
               </td>
             </tr>
             <tr>
-              <th>Cep</th>
+              <th>CEP</th>
               <td>
-                <input
-                  type="text"
+                <InputMask
+                  mask="99999-999"
+                  value={pacient.cep}
+                  onChange={onInputChange}
                   className="form-control"
                   placeholder="CEP do Paciente"
                   name="cep"
-                  value={pacient.cep}
-                  onChange={(e) => onInputChange(e)}
-                />
+                >
+                  {(inputProps) => <input {...inputProps} />}
+                </InputMask>
               </td>
             </tr>
             <tr>
               <th>Celular</th>
               <td>
-                <input
-                  type="text"
+                <InputMask
+                  mask="(99) 99999-9999"
+                  value={pacient.phoneNumber}
+                  onChange={onInputChange}
                   className="form-control"
                   placeholder="Celular do Paciente"
                   name="phoneNumber"
-                  value={pacient.phoneNumber}
-                  onChange={(e) => onInputChange(e)}
-                />
+                >
+                  {(inputProps) => <input {...inputProps} />}
+                </InputMask>
               </td>
             </tr>
             <tr>
               <th>Email</th>
               <td>
                 <input
-                  type="text"
+                  type="email"
                   className="form-control"
                   placeholder="Email do Paciente"
                   name="email"
                   value={pacient.email}
-                  onChange={(e) => onInputChange(e)}
+                  onChange={onInputChange}
                 />
               </td>
             </tr>

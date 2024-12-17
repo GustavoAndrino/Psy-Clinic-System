@@ -12,7 +12,6 @@ export const Navabar = () => {
         <div className='flex-box'>
           <Link className='btn btn-outline-light' to="/">Home</Link>
           <Link className='btn btn-outline-light' to={"/AddNewPacients"}>Adicionar Paciente</Link>
-          <button className='btn btn-outline-light'>Adicionar sessão</button>
           <Link className='btn btn-outline-light btn-primary' to={"/sessionsList"}>Lista de sessões</Link>
         </div>
         

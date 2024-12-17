@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircleOutline, CheckmarkCircleOutline } from 'react-ionicons';
+import InputMask from 'react-input-mask';
 
 export const PacientTable = ({ pacients, onEdit, updated }) => {
     const [disabled, setDisabled] = useState(true);
@@ -22,9 +23,9 @@ export const PacientTable = ({ pacients, onEdit, updated }) => {
     }, [readOnly]);
 
     useEffect(() => {
-        setReadOnly(true)
-        setDisabled(true)
-    }, [updated])
+        setReadOnly(true);
+        setDisabled(true);
+    }, [updated]);
 
     const editInfo = () => {
         setReadOnly(!readOnly);
@@ -32,16 +33,17 @@ export const PacientTable = ({ pacients, onEdit, updated }) => {
     };
 
     const onInputChange = (e) => {
-        onEdit({ ...pacients, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        onEdit({ ...pacients, [name]: value });
     };
 
     const fields = [
         { label: 'Nome', name: 'name', placeholder: 'Nome do Paciente' },
-        { label: 'CPF', name: 'cpf', placeholder: 'CPF' },
+        { label: 'CPF', name: 'cpf', placeholder: 'CPF', mask: '999.999.999-99' },
         { label: 'Nome do dependente', name: 'dependentName', placeholder: 'Nome do Dependente' },
-        { label: 'CPF do dependente', name: 'dependentCpf', placeholder: 'CPF do Dependente' },
+        { label: 'CPF do dependente', name: 'dependentCpf', placeholder: 'CPF do Dependente', mask: '999.999.999-99' },
         { label: 'Endereço', name: 'adress', placeholder: 'Endereço' },
-        { label: 'Celular', name: 'phoneNumber', placeholder: 'Celular' },
+        { label: 'Celular', name: 'phoneNumber', placeholder: 'Celular', mask: '(99) 99999-9999' },
         { label: 'Email', name: 'email', placeholder: 'Email' },
     ];
 
@@ -54,17 +56,35 @@ export const PacientTable = ({ pacients, onEdit, updated }) => {
                         <tr key={field.name}>
                             <th>{field.label}</th>
                             <td>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder={field.placeholder}
-                                    name={field.name}
-                                    value={pacients[field.name] || ''}
-                                    readOnly={readOnly}
-                                    style={style}
-                                    onChange={onInputChange}
-                                    disabled={disabled}
-                                />
+                                {field.mask ? (
+                                    // Use InputMask for fields with a mask
+                                    <InputMask
+                                        mask={field.mask}
+                                        value={pacients[field.name] || ''}
+                                        disabled={disabled}
+                                        readOnly={readOnly}
+                                        style={style}
+                                        className="form-control"
+                                        placeholder={field.placeholder}
+                                        onChange={onInputChange}
+                                        name={field.name}
+                                    >
+                                        {(inputProps) => <input {...inputProps} />}
+                                    </InputMask>
+                                ) : (
+                                    // Use standard input for other fields
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder={field.placeholder}
+                                        name={field.name}
+                                        value={pacients[field.name] || ''}
+                                        readOnly={readOnly}
+                                        style={style}
+                                        onChange={onInputChange}
+                                        disabled={disabled}
+                                    />
+                                )}
                             </td>
                         </tr>
                     ))}
@@ -84,7 +104,6 @@ export const PacientTable = ({ pacients, onEdit, updated }) => {
                     </button>
                 </tbody>
             </table>
-
         </div>
     );
 };
