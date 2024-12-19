@@ -1,5 +1,7 @@
 package com.cassinanasclinic.fullstack_backend_psy.repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +21,9 @@ public interface PacientRepository extends JpaRepository<Pacient, Long> {
 	Optional<Pacient> findByCpf(String cpf);
 	
 	Pacient getById(Long id);
+	
+	@Query("SELECT DISTINCT p FROM Pacient p JOIN p.sessions s WHERE s.paid = FALSE AND s.date < :fourWeeksAgo")
+	List<Pacient> findPatientsWithUnpaidSessionsOlderThan(@Param("fourWeeksAgo") LocalDateTime fourWeeksAgo);
+
 }
  

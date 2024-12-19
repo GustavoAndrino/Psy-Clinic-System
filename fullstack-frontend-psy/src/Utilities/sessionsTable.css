@@ -1,0 +1,31 @@
+.table-container {
+    max-height: 150px; /* Adjust for the height of 3 rows */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures consistent column widths */
+  }
+  
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd; /* Optional: Adds a border for clarity */
+  }
+  
+  .table-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+  
+  .table-container::-webkit-scrollbar-track {
+    background: #f9f9f9;
+  }
+  
