@@ -3,6 +3,7 @@ package com.cassinanasclinic.fullstack_backend_psy.model;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -17,8 +18,10 @@ public class Pacient {
 	private Long id;
 	
 	private String name;
+	@Column(nullable = true)
 	private String dependentName;
 	private String cpf;
+	@Column(nullable = true)
 	private String dependentCpf;
 	private String adress;
 	private String cep;
@@ -49,7 +52,7 @@ public class Pacient {
 	}
 
 	public String getDependentName() {
-		return dependentName;
+		return dependentName == null ? "" : dependentName;
 	}
 
 	public void setDependentName(String dependentName) {
@@ -57,7 +60,7 @@ public class Pacient {
 	}
 
 	public String getDependentCpf() {
-		return dependentCpf;
+		return dependentCpf == null ? "" : dependentCpf;
 	}
 
 	public void setDependentCpf(String dependentCpf) {

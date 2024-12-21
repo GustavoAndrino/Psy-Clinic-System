@@ -8,6 +8,7 @@ public class FullstackBackendPsyApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FullstackBackendPsyApplication.class, args);
+
 	}
 
 }

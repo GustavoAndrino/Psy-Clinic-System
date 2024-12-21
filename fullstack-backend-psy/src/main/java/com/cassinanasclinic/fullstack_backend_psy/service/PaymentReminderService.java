@@ -28,8 +28,9 @@ public class PaymentReminderService {
         List<Pacient> unpaidPacients = pacientRepository.findPatientsWithUnpaidSessionsOlderThan(fourWeeksAgo);
 
         for (Pacient pacient : unpaidPacients) {
-            String emailBody = String.format("Dear %s, \n\nYou have unpaid sessions. Please clear them at your earliest convenience.\n\nThank you.", 
-                                              pacient.getName());
+            String emailBody = String.format(" %s, \n\n Você tem sessões não pagas no valor de %f. "
+            		+ "Favor quita-las o quanto antes.\n\nObrigado.", 
+                                              pacient.getName(), pacient.getOwedValue());
 
             emailService.sendEmail(pacient.getEmail(), "Payment Reminder", emailBody);
         }

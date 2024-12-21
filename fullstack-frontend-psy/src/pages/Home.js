@@ -55,6 +55,10 @@ export default function Home() {
     }
   }
 
+  const dependentName = (dependentName) => {
+    return dependentName == "" ? "Sem dependente" : dependentName
+  }
+
 
   return (
     <div className='container'>
@@ -84,7 +88,8 @@ export default function Home() {
                 <tr>
                   <th scope="row" Key={index}>{index + 1}</th>
                   <td>{pacient.name}</td>
-                  <td>{pacient.dependentName}</td>
+                  <td style={{ fontStyle: pacient.dependentName === "" || pacient.dependentName == null ? 'italic' : 'normal' }}>
+                    {dependentName(pacient.dependentName)}</td>
                   <td>
                     {pacient.owedValue}&nbsp;&nbsp;&nbsp;
                     {checkOwedValue(pacient.owedValue) ? (

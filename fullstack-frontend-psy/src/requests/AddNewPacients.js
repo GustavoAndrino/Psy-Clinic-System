@@ -21,7 +21,7 @@ export const AddNewPacients = () => {
 
   const handleApply = () => {
     // Basic validation to ensure required fields are filled
-    if (!pacient.name || !pacient.cpf || !pacient.dependenteName || !pacient.dependentCpf) {
+    if (!pacient.name || !pacient.cpf) {
       alert("Please fill in all the required fields.");
       return;
     }
