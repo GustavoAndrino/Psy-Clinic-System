@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class SessionService {
 	@Autowired
 	SessionRepository sessionRepository;
 	
-	public List<Session> getAllSessions(){
-		return sessionRepository.findAll();
+	public List<Session> getAllSessions(Sort sort){
+		return sessionRepository.findAll(sort);
 	}
 	
 	public Optional<Session> getSessionById (Long id) {
@@ -46,8 +47,8 @@ public class SessionService {
 		}).orElseThrow(() -> new SessionNotFoundException(id));
 	}
 	
-	public List<Session> getSessionsByClientId(Long id) {
-		return sessionRepository.findByPacientId(id);
+	public List<Session> getSessionsByClientId(Long id, Sort sort) {
+		return sessionRepository.findByPacientId(id, sort);
 	}
 	
 

@@ -13,7 +13,7 @@ export const SessionsList = () => {
 
     const loadSessions = async () => {
         try{
-            const session = await axios.get("http://localhost:8080/sessions")
+            const session = await axios.get("http://localhost:8080/sessions?sortBy=paid&direction=ASC")
             setSessions(session.data)
         }catch(error){
             console.log("Failed getting sessions" + sessions)

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,7 @@ public interface PacientRepository extends JpaRepository<Pacient, Long> {
 	List<Pacient> findAll();
 	
 	@Query("SELECT p FROM Pacient p WHERE p.name LIKE :searchTerm% OR p.dependentName LIKE :searchTerm%")
-	List<Pacient> findByNameStartingWithOrDependentNameStartingWith(@Param("searchTerm") String searchTerm);
+	List<Pacient> findByNameStartingWithOrDependentNameStartingWith(@Param("searchTerm") String searchTerm, Sort sort);
 
 	Optional<Pacient> findByCpf(String cpf);
 	

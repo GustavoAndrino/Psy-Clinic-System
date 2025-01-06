@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,9 +35,14 @@ public class PacientController {
 	PacientService pacientService;
 	
 	@GetMapping("/pacientName")
-	public ResponseEntity<?> getPacientByName (@RequestParam(required=false) String input){
+	public ResponseEntity<?> getPacientByName (@RequestParam(required=false) String input, 
+			@RequestParam(required=false) String sortBy, @RequestParam(required=false) String direction){	
+		Sort sort = Sort.unsorted();
+		if(sortBy != null) {
+			sort = Sort.by(Sort.Direction.fromString(direction == null ? "ASC" : direction), sortBy);
+		}
 		List<Pacient> allPacients;
-		allPacients = pacientService.findPacientByNameContaining(input);
+		allPacients = pacientService.findPacientByNameContaining(input, sort);
 		return ResponseEntity.ok(allPacients);
 	}
 	

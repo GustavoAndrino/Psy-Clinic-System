@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Entity
 public class Pacient {
@@ -27,6 +29,7 @@ public class Pacient {
 	private String cep;
 	private String phoneNumber;
 	private String email;
+	private double owedValue;
 	
 	@OneToMany(mappedBy = "pacient", cascade = CascadeType.ALL)
 	@OrderBy("date DESC")
@@ -49,6 +52,7 @@ public class Pacient {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.sessions = sessions;
+		this.owedValue = getOwedValue();
 	}
 
 	public String getDependentName() {

@@ -27,7 +27,7 @@ export default function Home() {
 
   const loadUsers = async () => {
     try {
-      const result = await axios.get(`http://localhost:8080/pacientName?input=${input}`)
+      const result = await axios.get(`http://localhost:8080/pacientName?input=${input}&sortBy=name&direction=ASC`)
       setPacient(result.data)
     } catch (error) {
       console.log("Error loading pacients" + error)

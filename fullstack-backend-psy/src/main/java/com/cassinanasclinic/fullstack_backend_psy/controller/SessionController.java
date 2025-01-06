@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cassinanasclinic.fullstack_backend_psy.exception.PacientNotFoundException;
 import com.cassinanasclinic.fullstack_backend_psy.model.Pacient;
@@ -28,8 +30,13 @@ public class SessionController {
 	SessionService sessionService;
 	
 	@GetMapping("/sessions")
-	public ResponseEntity<?> getAllSessions(){
-		List<Session> sessions = sessionService.getAllSessions();
+	public ResponseEntity<?> getAllSessions(@RequestParam(required=false) String sortBy,
+			@RequestParam(required=false) String direction){		
+		Sort sort = Sort.unsorted();
+		if(sortBy != null) {
+			sort = Sort.by(Sort.Direction.fromString(direction == null ? "ASC" : direction), sortBy);
+		}
+		List<Session> sessions = sessionService.getAllSessions(sort);
 		return ResponseEntity.ok(sessions);
 	}
 	
@@ -42,8 +49,13 @@ public class SessionController {
 	}
 	
 	@GetMapping("/pacientSessionsList/{id}")
-	public ResponseEntity<?> getSessionsByPacientId(@PathVariable Long id){
-		 List<Session> sessions = sessionService.getSessionsByClientId(id);
+	public ResponseEntity<?> getSessionsByPacientId(@PathVariable Long id, @RequestParam(required=false) String sortBy,
+			@RequestParam(required=false) String direction){
+		Sort sort = Sort.unsorted();
+		if(sortBy != null) {
+			sort = Sort.by(Sort.Direction.fromString(direction == null ? "ASC" : direction), sortBy);
+		}
+		 List<Session> sessions = sessionService.getSessionsByClientId(id, sort);
 		    
 		    return ResponseEntity.ok(sessions);
 	}
