@@ -6,20 +6,48 @@ import { AlertCircleOutline, CheckmarkCircleOutline } from 'react-ionicons';
 
 export const SessionsList = () => {
     const [sessions, setSessions] = useState([])
+    const [sortBy, setSortBy] = useState("name")
+    const [sortDirection, setSortDirection] = useState("ASC")
 
     useEffect(() => {
         loadSessions();
-      }, [])
+      }, [sortBy, sortDirection])
 
     const loadSessions = async () => {
         try{
-            const session = await axios.get("http://localhost:8080/sessions?sortBy=paid&direction=ASC")
+            const session = await axios.get
+            (`http://localhost:8080/sessions?sortBy=${sortBy}&direction=${sortDirection}`)
             setSessions(session.data)
         }catch(error){
             console.log("Failed getting sessions" + sessions)
         }
     }
     
+
+    const sort1 = () => {
+      if(sortBy == "date"){
+        const string = sortDirection == "ASC" ? "DESC" : "ASC"
+        setSortDirection(string)
+      }
+      setSortBy("date")
+    }
+  
+    const sort2 = () => {
+      if(sortBy == "value"){
+        const string = sortDirection == "ASC" ? "DESC" : "ASC"
+        setSortDirection(string)
+      }
+      setSortBy("value")
+    }
+
+    const sort3 = () => {
+      if(sortBy == "paid"){
+        const string = sortDirection == "ASC" ? "DESC" : "ASC"
+        setSortDirection(string)
+      }
+      setSortBy("paid")
+    }
+
   return (
     <div className='container'>
       <div className='py-4'>
@@ -27,9 +55,9 @@ export const SessionsList = () => {
           <thead>
             <tr>
               <th scope="col">id</th>
-              <th scope="col">Data da sessão</th>
-              <th scope="col">Valor da sessão</th>
-              <th scope="col">Status do pagamento</th>
+              <th scope="col" onClick={sort1}>Data da sessão</th>
+              <th scope="col" onClick={sort2}>Valor da sessão</th>
+              <th scope="col" onClick={sort3}>Status do pagamento</th>
               <th scope="col">Detalhes do Paciente</th>
             </tr>
           </thead>

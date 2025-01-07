@@ -23,7 +23,7 @@ export const ViewPacients = () => {
     const fetchData = async () => {
       try {
         const pacientResponse = await axios.get(`http://localhost:8080/pacientById/${id}`);
-        const sessionResponse = await axios.get(`http://localhost:8080/pacientSessionsList/${id}?sortBy=date&direction=ASC`);
+        const sessionResponse = await axios.get(`http://localhost:8080/pacientSessionsList/${id}?sortBy=date&direction=DESC`);
         setPacients(pacientResponse.data);
         setSessions(sessionResponse.data);
       } catch (error) {

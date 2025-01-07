@@ -22,7 +22,7 @@ public class PaymentReminderService {
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(cron = "0 0 8 1 * ?") // Runs every day at 8 AM
+    //@Scheduled(cron = "0 0 8 1 * ?") // Runs every day at 8 AM
     public void sendPaymentReminders() {
         LocalDateTime fourWeeksAgo = LocalDateTime.now().minusWeeks(4);
         List<Pacient> unpaidPacients = pacientRepository.findPatientsWithUnpaidSessionsOlderThan(fourWeeksAgo);

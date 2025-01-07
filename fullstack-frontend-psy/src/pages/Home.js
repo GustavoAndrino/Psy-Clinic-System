@@ -7,15 +7,16 @@ import { Button } from 'bootstrap';
 export default function Home() {
 
   const [pacients, setPacient] = useState([]);
-  const [owing, setOwing] = useState(false)
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("")
   const [update, setUpdated] = useState(false)
+  const [sortBy, setSortBy] = useState("name")
+  const [sortDirection, setSortDirection] = useState("ASC")
 
   useEffect(() => {
     loadUsers();
     console.log(pacients)
-  }, [input, update])
+  }, [input, update, sortBy, sortDirection])
 
   const checkOwedValue = (value) => {
     if (value > 0) {
@@ -27,7 +28,8 @@ export default function Home() {
 
   const loadUsers = async () => {
     try {
-      const result = await axios.get(`http://localhost:8080/pacientName?input=${input}&sortBy=name&direction=ASC`)
+      const result = await axios.get
+      (`http://localhost:8080/pacientName?input=${input}&sortBy=${sortBy}&direction=${sortDirection}`)
       setPacient(result.data)
     } catch (error) {
       console.log("Error loading pacients" + error)
@@ -59,6 +61,22 @@ export default function Home() {
     return dependentName == "" ? "Sem dependente" : dependentName
   }
 
+  const sort1 = () => {
+    if(sortBy == "name"){
+      const string = sortDirection == "ASC" ? "DESC" : "ASC"
+      setSortDirection(string)
+    }
+    setSortBy("name")
+  }
+
+  const sort2 = () => {
+    if(sortBy == "dependentName"){
+      const string = sortDirection == "ASC" ? "DESC" : "ASC"
+      setSortDirection(string)
+    }
+    setSortBy("dependentName")
+  }
+
 
   return (
     <div className='container'>
@@ -76,8 +94,8 @@ export default function Home() {
           <thead>
             <tr>
               <th scope="col">id</th>
-              <th scope="col">Nome</th>
-              <th scope="col">Nome do dependente</th>
+              <th scope="col" onClick={sort1}>Nome</th>
+              <th scope="col" onClick={sort2}>Nome do dependente</th>
               <th scope="col">Valor devido</th>
               <th scope="col">Ver mais</th>
             </tr>
