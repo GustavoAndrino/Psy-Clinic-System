@@ -26,7 +26,7 @@ public class PacientService {
 		return pacientRepository.findAll();
 	}
 	
-	public List<Pacient> findPacientByNameContaining (String string, Sort sort) {
+	public List<Pacient> findPacientByNameContaining (String string, Sort	 sort) {
 		System.out.println(string);
 		return pacientRepository.findByNameStartingWithOrDependentNameStartingWith(string, sort);
 	}

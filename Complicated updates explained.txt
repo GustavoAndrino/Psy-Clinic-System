@@ -1,3 +1,11 @@
+***Login page explained***
+The app was at first completed, and it owuld be distributed as a file to install. But after some careful thought, I realized that
+it would be a lot better to make a login system, and put the system online. Allthough it will make me do a lot more work to create 
+authentication systems, this methods allow users to test the system, with a 20 actions/day limit. So it would be better for new 
+people to test it, and for recruiters to look at my project. Hence, I have started making the login feature today (01/21/2025)
+
+
+***OLD***
 ***Add new Session to patient explained***
 
 Adding a session to a patient resulted in a lot of alterations, due to the fact that de LocalDateTime from the backend no having
@@ -6,18 +14,17 @@ and some alterations to the viewPacient page. Currently, the viewPacient.js look
 Cleaning it up is a priority for next commit, in which I will separete the components for better readability
 
 
-***OLD***
 ***SEARCH BAR UPDATE EXPLAINED***
 
 As I decided to implement a search bar, the way I first did the backend made it really hard to handle the requests,
 since the backend received an input and returend a Optionl<Pacient> object, which is in essence, a single object, 
 not an array of objects. This method of returning caused react to crash, since it was expecting an array of Pacients.
 
-In order to fix it and make it easier, a new repository query was created, that returned a lsit pacients that had their name
+In order to fix it and make it easier, a new repository query was created, that returned a list of pacients that had their name
 or their dependent name starting with a string. This is not very efficient, but since a clinic shouldnt have so many 
 clients to the point that this strategy would be prejudicial, then the method should work fine.
 
-Changing the backend caused a problem with forntend requests, that were still trying to use the old /pacient method 
+Changing the backend caused a problem with forntend requests, that were still trying to use the old '/pacient' method 
 that returned string based on whatever type of string the user input (cpf, name or id).
 
 In order to fix that, I splitted the previous method into a new /pacient that returns a list of users that contain
@@ -29,4 +36,4 @@ to click on that user to see more details based on their id.
 
 Change Pacients for Patients. I kept the idea of patients in portuguese in my head (Pacientes) and mixed both
 Alter controller in backend returning a response entity, instead of just returning the service that returns a response entity
-Separate components by function in te front end to improve readability for other users
+Separate components by function in the front end to improve readability for other users (*DONE*)
