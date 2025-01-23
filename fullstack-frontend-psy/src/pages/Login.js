@@ -1,26 +1,43 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css'; // Import CSS module
+import axios from 'axios';
 
 const Login = ({ onLogin }) => {
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loginRequest, setLoginRequest] = useState({
+    username: '',
+    password: ''
+  });
+  const [confirmPassowrd, setConfirmPassword] = useState('')
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isCreatingAccount) {
-      if (password !== confirmPassword) {
+      if (loginRequest.password !== confirmPassowrd) {
         alert("Passwords do not match!");
         return;
+      }
+
+      try{
+        const response = await axios.post('http://localhost:8080/api/auth/create-user', {
+          username: loginRequest.username,
+          password: loginRequest.password,
+          // No need to send `actions`, it will be handled by the backend
+        });
+
+      alert("Account created successfully!");
+      setIsCreatingAccount(false);
+
+      }catch(e){
+        alert("error:" + e)
       }
       alert("Account created successfully!");
       setIsCreatingAccount(false);
     } else {
-      if (username === 'admin' && password === 'password') {
+      if (loginRequest.username === 'admin' && loginRequest.password === 'password') {
         onLogin();
         navigate('/');
       } else {
@@ -28,6 +45,18 @@ const Login = ({ onLogin }) => {
       }
     }
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setLoginRequest((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleInputChange2 = (e) => {
+    setConfirmPassword(e.target.value)
+  }
 
   return (
     <div className={styles.container}>
@@ -40,22 +69,25 @@ const Login = ({ onLogin }) => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
+            name="username"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={loginRequest.username}
+            onChange={handleInputChange}
           />
           <input
             type="password"
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={loginRequest.password}
+            onChange={handleInputChange}
           />
           {isCreatingAccount && (
             <input
               type="password"
+              name="confirmPassword"
               placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassowrd}
+              onChange={handleInputChange2}
             />
           )}
           <button type="submit">

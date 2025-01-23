@@ -46,26 +46,6 @@ public class PacientController {
 		return ResponseEntity.ok(allPacients);
 	}
 	
-	//TODO see if method below can still be useful for something
-	/*@GetMapping("/pacient")
-	public ResponseEntity<?> getPacientBy (@RequestParam(required=false) String input){
-		 Optional<Pacient> pacient;
-		 List<Pacient> allPacients;
-		 	if(input.isEmpty()) {
-		 		allPacients = pacientService.findAllClients();
-		 		return ResponseEntity.ok(allPacients);
-		 	}
-	        // Determine input type and call the appropriate service method
-	        if (isNumeric(input)) { // Input is numeric, so it's an ID
-	            pacient = pacientService.findPacientById(Long.parseLong(input));
-	        } else { // Input matches CPF format
-	            pacient = pacientService.findPacientByCpf(input);
-	        }
-
-	        return pacient.map(ResponseEntity::ok)
-	                  .orElseThrow(() -> new PacientNotFoundException(input));
-	        }*/
-	
 	@GetMapping("/pacientById/{id}")
 	public ResponseEntity<?> pacientById(@PathVariable Long id){
 		Optional<Pacient> pacient = pacientService.findPacientById(id);

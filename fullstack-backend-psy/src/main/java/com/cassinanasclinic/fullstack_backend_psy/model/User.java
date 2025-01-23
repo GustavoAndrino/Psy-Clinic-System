@@ -20,6 +20,10 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Pacient> pacients;
+	
+	public User() {
+	    // default constructor
+	}
 
 	public User(Long id, String username, String password, int actions, List<Pacient> pacients) {
 		super();
@@ -27,6 +31,15 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.actions = actions;
+		this.pacients = pacients;
+	}
+	
+	public User(Long id, String username, String password, List<Pacient> pacients) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.actions = 20;
 		this.pacients = pacients;
 	}
 
