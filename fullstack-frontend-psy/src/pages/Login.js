@@ -28,23 +28,39 @@ const Login = ({ onLogin }) => {
           // No need to send `actions`, it will be handled by the backend
         });
 
-      alert("Account created successfully!");
-      setIsCreatingAccount(false);
-
       }catch(e){
         alert("error:" + e)
       }
       alert("Account created successfully!");
       setIsCreatingAccount(false);
     } else {
-      if (loginRequest.username === 'admin' && loginRequest.password === 'password') {
-        onLogin();
-        navigate('/');
-      } else {
-        alert("Invalid username or password!");
+      
+      try {
+
+        const response = await axios.post('http://localhost:8080/api/auth/login', {
+          username: loginRequest.username,
+          password: loginRequest.password,
+        });
+    
+        if (response.status === 200) {
+          const token = response.headers['authorization'];
+          if (token) {
+            localStorage.setItem('authToken', token); // Store token
+            onLogin();
+            navigate('/');
+          }
+        }
+      } catch (e) {
+        if (e.response?.status === 401) {
+          alert("Invalid username or password!");
+        } else {
+          alert("An error occurred during login.");
+        }
       }
     }
   };
+
+  console.log(isCreatingAccount)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -90,7 +106,7 @@ const Login = ({ onLogin }) => {
               onChange={handleInputChange2}
             />
           )}
-          <button type="submit">
+          <button type="submit" onClick={handleSubmit}>
             {isCreatingAccount ? 'Sign Up' : 'Login'}
           </button>
         </form>

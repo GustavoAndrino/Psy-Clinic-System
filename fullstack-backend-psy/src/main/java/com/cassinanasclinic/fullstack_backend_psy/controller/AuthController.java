@@ -19,23 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cassinanasclinic.fullstack_backend_psy.model.LoginRequest;
 import com.cassinanasclinic.fullstack_backend_psy.model.User;
 import com.cassinanasclinic.fullstack_backend_psy.repository.UserRepository;
+import com.cassinanasclinic.fullstack_backend_psy.service.TokenService;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "Authorization")
 public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
 
-    private Map<String, String> sessions = new HashMap<>(); // Simple session store
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername());
         if (user != null && user.getPassword().equals(request.getPassword())) {
             String token = UUID.randomUUID().toString();
-            sessions.put(token, user.getUsername());
+            tokenService.createSession(token, user.getUsername());
             return ResponseEntity.ok().header("Authorization", token).body("Logged in successfully");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
@@ -46,28 +48,23 @@ public class AuthController {
     	User user = userRepository.findByUsername(newUser.getUsername());
     	if(user !=null) {
     		return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario já existente");
-    	}
-    	
+    	}  	
     	userRepository.save(newUser);
     	return ResponseEntity.status(HttpStatus.ACCEPTED).body("Usuario criado com sucesso");
     }
 
     @GetMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
-        sessions.remove(token);
+        tokenService.removeSession(token);
         return ResponseEntity.ok("Logged out successfully");
     }
 
     @GetMapping("/current-user")
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
-        String username = sessions.get(token);
+        String username = tokenService.getUsernameFromToken(token);
         if (username != null) {
             return ResponseEntity.ok(username);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session");
-    }
-    
-    public String getCurrentUserFromToken(String token) {
-    	return sessions.get(token);
     }
 }
