@@ -16,5 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
  //TODO Return pacients based on username
 	
 	User findByUsername(String username);
+	
+	@Query("SELECT u.pacients FROM User u WHERE u.username = :username")
+	List<Pacient> findPacientsByUsername(@Param("username") String username);
 
 }

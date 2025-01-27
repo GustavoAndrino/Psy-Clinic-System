@@ -12,6 +12,7 @@ export default function Home() {
   const [update, setUpdated] = useState(false)
   const [sortBy, setSortBy] = useState("name")
   const [sortDirection, setSortDirection] = useState("ASC")
+  const token = localStorage.getItem('authToken');
 
   useEffect(() => {
     loadUsers();
@@ -27,16 +28,21 @@ export default function Home() {
   }
 
   const loadUsers = async () => {
+    setLoading(true); // Indicate loading
+  
     try {
-      const result = await axios.get
-      (`http://localhost:8080/pacientName?input=${input}&sortBy=${sortBy}&direction=${sortDirection}`)
-      setPacient(result.data)
+      const result = await axios.get('http://localhost:8080/api/auth/user-pacients', {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      setPacient(result.data); // Save the pacient list
     } catch (error) {
-      console.log("Error loading pacients" + error)
+      console.error("Error loading pacients: ", error);
     } finally {
-      setLoading(false)
+      setLoading(false); // Loading complete
     }
-  }
+  };
 
   const onInputChange = (e) => {
     setInput(e.target.value)

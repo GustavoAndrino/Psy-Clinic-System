@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.cassinanasclinic.fullstack_backend_psy.exception.PacientNotFoundException;
 import com.cassinanasclinic.fullstack_backend_psy.model.Pacient;
 import com.cassinanasclinic.fullstack_backend_psy.model.Session;
+import com.cassinanasclinic.fullstack_backend_psy.model.User;
 import com.cassinanasclinic.fullstack_backend_psy.repository.PacientRepository;
+import com.cassinanasclinic.fullstack_backend_psy.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -21,6 +23,9 @@ public class PacientService {
 	
 	@Autowired
 	PacientRepository pacientRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	public List<Pacient> findAllClients(){
 		return pacientRepository.findAll();
@@ -49,7 +54,8 @@ public class PacientService {
 		return pacientRepository.findByCpf(cpf);
 	}
 	
-	public ResponseEntity<?> addNewPacient(Pacient newPacient){
+	public ResponseEntity<?> addNewPacient(String username, Pacient newPacient){
+		User user = userRepository.findByUsername(username);
 		Optional<Pacient> pacient = pacientRepository.findByCpf(newPacient.getCpf());
 		
 		if(pacient.isPresent()) {
@@ -57,6 +63,7 @@ public class PacientService {
 		}
 		
 		newPacient.getSessions().forEach(session -> session.setPacient(newPacient));
+		newPacient.setUser(user);
 		Pacient newAddedPacient = pacientRepository.save(newPacient);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(newAddedPacient);
 	}

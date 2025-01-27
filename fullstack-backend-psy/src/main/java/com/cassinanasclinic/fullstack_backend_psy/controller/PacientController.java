@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,7 @@ import com.cassinanasclinic.fullstack_backend_psy.exception.PacientNotFoundExcep
 import com.cassinanasclinic.fullstack_backend_psy.model.Pacient;
 import com.cassinanasclinic.fullstack_backend_psy.model.Session;
 import com.cassinanasclinic.fullstack_backend_psy.service.PacientService;
+import com.cassinanasclinic.fullstack_backend_psy.service.TokenService;
 
 import jakarta.websocket.server.PathParam;
 
@@ -33,6 +35,9 @@ public class PacientController {
 	
 	@Autowired
 	PacientService pacientService;
+	
+	@Autowired
+	TokenService tokenService;
 	
 	@GetMapping("/pacientName")
 	public ResponseEntity<?> getPacientByName (@RequestParam(required=false) String input, 
@@ -67,8 +72,14 @@ public class PacientController {
 	}
 	
 	@PostMapping("/newPacient")
-	public ResponseEntity<?> addNewPacient(@RequestBody(required=true) Pacient pacient){
-		return pacientService.addNewPacient(pacient);
+	public ResponseEntity<?> addNewPacient(@RequestHeader("Authorization") String token, 
+			@RequestBody(required=true) Pacient pacient){
+		
+		String username = tokenService.getUsernameFromToken(token);
+        if (username != null) {
+        	return ResponseEntity.ok().body( pacientService.addNewPacient(username,pacient));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session");
 	}
 	
 	@PutMapping("/sessionToPacient/{id}")
@@ -105,5 +116,12 @@ public class PacientController {
     private boolean isValidCpf(String cpf) {
         // Simple CPF validation logic (adjust as needed)
         return cpf != null && cpf.matches("\\d{11}");
-    }	
+    }
+    
+    /*TODO FOR TESTING
+    @PostMapping("/testAddPacient")
+    public ResponseEntity<?> testAddNewPacient(@RequestParam String username, 
+                                               @RequestBody Pacient pacient) {
+        return pacientService.addNewPacient(username, pacient);
+    }*/
 }

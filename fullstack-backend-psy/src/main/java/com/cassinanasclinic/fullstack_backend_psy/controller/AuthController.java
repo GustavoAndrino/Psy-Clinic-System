@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cassinanasclinic.fullstack_backend_psy.model.LoginRequest;
@@ -67,4 +68,24 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session");
     }
+    
+    @GetMapping("/user-pacients")
+    public ResponseEntity<?> getPacientsFromUser(@RequestHeader("Authorization") String token){
+    	String username = tokenService.getUsernameFromToken(token);
+    	if(username != null) {
+    		return ResponseEntity.ok().body(userRepository.findPacientsByUsername(username));
+    	}
+    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session");
+    }
+    
+    /*@GetMapping("/user-pacients-test")
+    public ResponseEntity<?> getPacientsFromUserTest(@RequestParam String username1){
+    	String username = username1;
+    	if(username != null) {
+    		return ResponseEntity.ok().body(userRepository.findPacientsByUsername(username));
+    	}
+    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session");
+    }*/
+    
+    
 }
