@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { format, formatISO, parse } from 'date-fns'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom';
 import './ViewPacient.css';
 import { AlertCircleOutline, CheckmarkCircleOutline, CloseCircleOutline } from 'react-ionicons'
 import { PacientTable } from '../Utilities/PacientTable';
@@ -10,20 +10,31 @@ import { SessionsTable } from '../Utilities/SessionsTable';
 export const ViewPacients = () => {
 
   const { id } = useParams()
+  const location = useLocation();
+  const {pacient} = location.state || {}
 
-  const [sessions, setSessions] = useState([])
-  const [pacients, setPacients] = useState(null)
+  const [sessions, setSessions] = useState(pacient?.sessions || [])
+  const [pacients, setPacients] = useState(pacient)
   const [newSession, setNewSession] = useState(null)
   const [loading, setLoading] = useState(true);
   const [paymentStatus, setPaymentStatus] = useState({})
   const [updated, setUpdated] = useState(false);
+  const token = localStorage.getItem('authToken');
 
   //update Pacient and sessons list
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pacientResponse = await axios.get(`http://localhost:8080/pacientById/${id}`);
-        const sessionResponse = await axios.get(`http://localhost:8080/pacientSessionsList/${id}?sortBy=date&direction=DESC`);
+        const pacientResponse = await axios.get(`http://localhost:8080/pacientById/${id}`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        })
+        const sessionResponse = await axios.get(`http://localhost:8080/pacientSessionsList/${id}?sortBy=date&direction=DESC`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         setPacients(pacientResponse.data);
         setSessions(sessionResponse.data);
       } catch (error) {

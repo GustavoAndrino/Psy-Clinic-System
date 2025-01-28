@@ -52,9 +52,23 @@ public class PacientController {
 	}
 	
 	@GetMapping("/pacientById/{id}")
-	public ResponseEntity<?> pacientById(@PathVariable Long id){
-		Optional<Pacient> pacient = pacientService.findPacientById(id);
-		return ResponseEntity.ok(pacient);
+	public ResponseEntity<?> pacientById(@RequestHeader("Authorization") String token, 
+			@PathVariable Long id){
+		    String username = tokenService.getUsernameFromToken(token);
+
+		    Optional<Pacient> pacientOptional = pacientService.findPacientById(id);
+
+		    if (pacientOptional.isEmpty()) {
+		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pacient not found");
+		    }
+
+		    Pacient pacient = pacientOptional.get();
+
+		    if (!username.equals(pacient.getUser().getUsername())) {
+		        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+		    }
+		    
+		    return ResponseEntity.ok(pacient);
 	}
 	
 	@GetMapping("/pacientSessions/{id}")

@@ -133,7 +133,10 @@ export default function Home() {
                     )}
                   </td>
                   <td>
-                    <Link className='btn btn-outline-light btn-primary' to={`/viewPacient/${pacient.id}`}>Detalhes</Link>
+                    <Link className='btn btn-outline-light btn-primary' to={`/viewPacient/${pacient.id}`}
+                    state={{ pacient }}
+                    >Detalhes
+                    </Link>
                     <button className='btn btn-outline-light btn-danger' 
                     onClick={() => deleteButton(pacient.id)}>Deletar
                     </button>
