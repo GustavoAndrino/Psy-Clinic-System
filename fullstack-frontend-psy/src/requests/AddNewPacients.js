@@ -5,7 +5,7 @@ import InputMask from 'react-input-mask'; // Importing InputMask
 export const AddNewPacients = () => {
   const [pacient, setPacient] = useState({
     name: "",
-    dependenteName: "",
+    dependentName: "",
     cpf: "",
     dependentCpf: "",
     adress: "",
@@ -14,6 +14,8 @@ export const AddNewPacients = () => {
     email: "",
     sessions: []
   });
+
+  const token = localStorage.getItem('authToken');
 
   const onInputChange = (e) => {
     setPacient({ ...pacient, [e.target.name]: e.target.value });
@@ -27,9 +29,15 @@ export const AddNewPacients = () => {
     }
 
     try {
-      axios.post("http://localhost:8080/newPacient", pacient)
+      axios.post("http://localhost:8080/newPacient", pacient, {
+        headers: {
+          Authorization: `${token}`
+        },
+      })
         .then(response => {
           alert("Paciente adicionado com sucesso");
+          
+  console.log(pacient)
         })
         .catch(error => {
           console.error("Error adding patient: ", error);
@@ -40,6 +48,7 @@ export const AddNewPacients = () => {
       alert("Error adding patient");
     }
   };
+
 
   return (
     <div className='container'>
@@ -83,8 +92,8 @@ export const AddNewPacients = () => {
                   type="text"
                   className="form-control"
                   placeholder="Nome do Dependente"
-                  name="dependenteName"
-                  value={pacient.dependenteName}
+                  name="dependentName"
+                  value={pacient.dependentName}
                   onChange={onInputChange}
                 />
               </td>

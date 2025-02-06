@@ -45,7 +45,8 @@ const Login = ({ onLogin }) => {
         if (response.status === 200) {
           const token = response.headers['authorization'];
           if (token) {
-            localStorage.setItem('authToken', token); // Store token
+            localStorage.setItem('authToken', token);
+            axios.defaults.headers.common["Authorization"] = token;
             onLogin();
             navigate('/');
           }

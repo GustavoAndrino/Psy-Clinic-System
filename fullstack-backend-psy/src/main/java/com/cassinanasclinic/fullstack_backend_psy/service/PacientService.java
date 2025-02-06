@@ -62,8 +62,8 @@ public class PacientService {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: este CPF já existe");
 		}
 		
-		newPacient.getSessions().forEach(session -> session.setPacient(newPacient));
 		newPacient.setUser(user);
+		newPacient.getSessions().forEach(session -> session.setPacient(newPacient));
 		Pacient newAddedPacient = pacientRepository.save(newPacient);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(newAddedPacient);
 	}
